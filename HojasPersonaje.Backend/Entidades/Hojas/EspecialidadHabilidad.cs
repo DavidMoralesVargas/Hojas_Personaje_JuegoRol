@@ -3,7 +3,7 @@
     public class EspecialidadHabilidad
     {
         public int Id { get; set; }
-        public string? Habilidad { get; set; }
+        public string? HabilidadEspecialidad { get; set; }
         public string? Especialidad { get; set; }
         
         public Habilidad? habilidad { get; set; }

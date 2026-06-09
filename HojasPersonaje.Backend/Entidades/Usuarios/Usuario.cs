@@ -1,6 +1,4 @@
-﻿
-
-using HojasPersonaje.Backend.Entidades.Hojas;
+﻿using HojasPersonaje.Backend.Entidades.Hojas;
 
 namespace HojasPersonaje.Backend.Entidades.Usuarios
 {
