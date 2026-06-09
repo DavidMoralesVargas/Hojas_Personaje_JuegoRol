@@ -5,9 +5,48 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>hojaspersonaje-frontend</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+    
   </head>
   <body>
     <div id="app"></div>
+    <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        blood: {
+          DEFAULT: '#8a0303',
+          dark: '#4a0000',
+          glow: 'rgba(138,3,3,0.5)'
+        },
+        void: '#070709',
+        ash: '#8c8c8c'
+      },
+      fontFamily: {
+        cinzel: ['Cinzel', 'serif'],
+        cormorant: ['Cormorant Garamond', 'serif']
+      },
+      backgroundImage: {
+        'dark-mist':
+          "url('https://images.unsplash.com/photo-1478479405421-ce83c92fb3ba?q=80&w=2000&auto=format&fit=crop')"
+      },
+      animation: {
+        'pulse-slow':
+          'pulse 4s cubic-bezier(0.4,0,0.6,1) infinite'
+      }
+    }
+  }
+}
+</script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
