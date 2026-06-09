@@ -1,3 +1,6 @@
+using HojasPersonaje.Backend.Datos;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,6 +8,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+
+//Conexión a base de datos PostgreSQL
+builder.Services.AddDbContext<DatabaseContext>(options =>
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("PostgreSqlConnection")));
+
 
 var app = builder.Build();
 
