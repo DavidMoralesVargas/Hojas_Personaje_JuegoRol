@@ -10,5 +10,6 @@ namespace HojasPersonaje.Backend.Repositorios.Interfaces.Usuarios
         Task<Usuario> Guardar(Usuario entidad);
         Task<Usuario> Editar(Usuario entidad);
         Task Eliminar(int id);
+        Task<Usuario> ObtenerPorNombre(string nombre);
     }
 }
