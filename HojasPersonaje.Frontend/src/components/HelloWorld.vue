@@ -122,13 +122,13 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
+import Swal from 'sweetalert2'
 
 const username = ref('')
 const pin = ref('')
 const cargando = ref(false)
-
-import { onMounted } from 'vue'
 
 onMounted(() => {
   if (window.tailwind) {
@@ -153,8 +153,7 @@ onMounted(() => {
               "url('https://images.unsplash.com/photo-1478479405421-ce83c92fb3ba?q=80&w=2000&auto=format&fit=crop')"
           },
           animation: {
-            'pulse-slow':
-              'pulse 4s cubic-bezier(0.4,0,0.6,1) infinite'
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4,0,0.6,1) infinite'
           }
         }
       }
@@ -162,23 +161,55 @@ onMounted(() => {
   }
 })
 
+/* 🔥 Método que quieres ejecutar si todo sale bien */
+const continuarFlujo = (data) => {
+  console.log('Login exitoso:', data)
+
+  // aquí puedes redirigir, guardar token, etc
+  Swal.fire({
+    icon: 'success',
+    title: 'Bienvenido',
+    text: 'Acceso concedido',
+    confirmButtonColor: '#8a0303'
+  })
+}
+
+/* 💀 LOGIN */
 const iniciarSesion = async () => {
   cargando.value = true
 
   try {
     const login = {
-      username: username.value,
-      pin: pin.value
+      NombreUsuario: username.value,
+      Pin: pin.value,
+      tipoUsuario: 1
     }
 
-    console.log(login)
+    const response = await axios.post('https://localhost:7084/api/usuarios', login)
 
-    // Aquí llamas tu API
-    // await axios.post('/api/login', login)
+    // ✔️ Si todo OK (200–299)
+    continuarFlujo(response.data)
 
-    await new Promise(resolve => setTimeout(resolve, 2000))
   } catch (error) {
-    console.error(error)
+    // ❌ BadRequest del backend
+    if (error.response && error.response.status === 400) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Acceso denegado',
+        text: error.response.data?.message || 'Credenciales inválidas',
+        confirmButtonColor: '#8a0303'
+      })
+      return
+    }
+
+    // ⚠️ otros errores (500, red, etc)
+    Swal.fire({
+      icon: 'error',
+      title: 'Error del sistema',
+      text: 'Ocurrió un problema inesperado',
+      confirmButtonColor: '#8a0303'
+    })
+
   } finally {
     cargando.value = false
   }
