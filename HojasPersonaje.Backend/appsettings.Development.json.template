@@ -1,0 +1,13 @@
+{
+  "ConnectionStrings": {
+    "PostgreSqlConnection": "Host=localhost;Port=[PUERTO];Database=UniversoDeTinieblas;Username=[NombreUsuario];Password=[Contraseña]"
+  },
+  "jwtKey": "[CLAVE JSON JWT]",
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}
