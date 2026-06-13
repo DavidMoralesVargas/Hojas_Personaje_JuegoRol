@@ -11,5 +11,6 @@ namespace HojasPersonaje.Backend.Services.Interfaces.Usuarios
         Task<ActionResponse<Usuario>> Ingresar(UsuarioDTO entidad);
         Task<ActionResponse<Usuario>> Editar(Usuario entidad);
         Task<ActionResponse<bool>> Eliminar(int id);
+        Task<ActionResponse<bool>> VerificarUsuarioRol(string nombre, string rol); 
     }
 }

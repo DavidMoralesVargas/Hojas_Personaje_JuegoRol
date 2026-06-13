@@ -20,5 +20,6 @@ namespace HojasPersonaje.Backend.Repositorios.Implementaciones.Usuarios
         {
             return (await _context.Usuarios.FirstOrDefaultAsync(n => n.Nombre_Usuario == nombre))!;
         }
+
     }
 }

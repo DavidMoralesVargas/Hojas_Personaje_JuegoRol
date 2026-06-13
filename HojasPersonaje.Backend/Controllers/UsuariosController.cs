@@ -56,7 +56,7 @@ namespace HojasPersonaje.Backend.Controllers
             return BadRequest(resultado.Mensaje);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Eliminar(int id)
         {
             var resultado = await _usuarioService.Eliminar(id);

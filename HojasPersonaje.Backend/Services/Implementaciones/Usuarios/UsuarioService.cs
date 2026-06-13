@@ -150,6 +150,48 @@ namespace HojasPersonaje.Backend.Services.Implementaciones.Usuarios
             }
         }
 
+        //Método que verifica que un usuario tenga un rol especificado
+        public async Task<ActionResponse<bool>> VerificarUsuarioRol(string nombre, string rol)
+        {
+            try
+            {
+                var usuario = await _repository.ObtenerPorNombre(nombre);
+                if(usuario == null)
+                {
+                    return new ActionResponse<bool>
+                    {
+                        Exitoso = false,
+                        Mensaje = "El usuario con ese nombre no existe."
+                    };
+                }
+
+                if (!usuario.tipoUsuario.ToString().Equals(rol))
+                {
+                    return new ActionResponse<bool>
+                    {
+                        Exitoso = false,
+                        Mensaje = "El usuario no tiene ese rol."
+                    };
+                }
+
+                return new ActionResponse<bool>
+                {
+                    Exitoso = true,
+                    Resultado = true
+                };
+            }
+            catch(Exception ex)
+            {
+                return new ActionResponse<bool>
+                {
+                    Exitoso = false,
+                    Mensaje = ex.Message
+                };
+            }
+        }
+
+
+
         //Crea un objeto Usuario desde un UsuarioDTO
         private Usuario ConvertirAUsuario(UsuarioDTO usuarioDTO)
         {

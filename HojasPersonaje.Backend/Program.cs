@@ -1,10 +1,14 @@
 using HojasPersonaje.Backend.Datos;
 using HojasPersonaje.Backend.Repositorios.Implementaciones.Generico;
 using HojasPersonaje.Backend.Repositorios.Implementaciones.Usuarios;
+using HojasPersonaje.Backend.Repositorios.Implementaciones.Vampiros;
 using HojasPersonaje.Backend.Repositorios.Interfaces.Generico;
 using HojasPersonaje.Backend.Repositorios.Interfaces.Usuarios;
+using HojasPersonaje.Backend.Repositorios.Interfaces.Vampiros;
 using HojasPersonaje.Backend.Services.Implementaciones.Usuarios;
+using HojasPersonaje.Backend.Services.Implementaciones.Vampiros;
 using HojasPersonaje.Backend.Services.Interfaces.Usuarios;
+using HojasPersonaje.Backend.Services.Interfaces.Vampiros;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -35,11 +39,15 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("PostgreSqlConnection")));
 
-//Dependencias 
+//Repositorios
 builder.Services.AddScoped(typeof(IRepository<>),typeof(Repository<>));
 builder.Services.AddScoped<IUsuariosRepository, UsuariosRepository>();
-builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IDisciplinasRepository, DisciplinasRepository>();
 
+
+//Servicios
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IDisciplinasServices, DisciplinasServices>();
 
 
 //Configuramos autenticación de Token
