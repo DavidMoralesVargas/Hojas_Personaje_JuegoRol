@@ -43,11 +43,13 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 builder.Services.AddScoped(typeof(IRepository<>),typeof(Repository<>));
 builder.Services.AddScoped<IUsuariosRepository, UsuariosRepository>();
 builder.Services.AddScoped<IDisciplinasRepository, DisciplinasRepository>();
+builder.Services.AddScoped<IVampiroRepository, VampiroRepository>();
 
 
 //Servicios
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IDisciplinasServices, DisciplinasServices>();
+builder.Services.AddScoped<IVampirosServices, VampirosServices>();
 
 
 //Configuramos autenticación de Token

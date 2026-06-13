@@ -10,5 +10,6 @@ namespace HojasPersonaje.Backend.Services.Interfaces.Vampiros
         Task<ActionResponse<Disciplina>> Guardar(Disciplina entidad);
         Task<ActionResponse<Disciplina>> Editar(Disciplina entidad);
         Task<ActionResponse<bool>> Eliminar(int id);
+        Task<ActionResponse<List<Disciplina>>> Combo();
     }
 }

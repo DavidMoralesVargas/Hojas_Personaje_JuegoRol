@@ -11,5 +11,6 @@ namespace HojasPersonaje.Backend.Repositorios.Interfaces.Vampiros
         Task<Disciplina> Guardar(Disciplina entidad);
         Task<Disciplina> Editar(Disciplina entidad);
         Task Eliminar(int id);
+        Task<List<Disciplina>> Combo();
     }
 }

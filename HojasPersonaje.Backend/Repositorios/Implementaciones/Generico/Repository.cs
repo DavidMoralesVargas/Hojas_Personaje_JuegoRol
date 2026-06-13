@@ -15,31 +15,31 @@ namespace HojasPersonaje.Backend.Repositorios.Implementaciones.Generico
             _dbSet = context.Set<T>();
         }
 
-        public async Task<List<T>> ObtenerTodos()
+        public virtual async Task<List<T>> ObtenerTodos()
         {
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<T?> ObtenerPorId(int id)
+        public virtual async Task<T?> ObtenerPorId(int id)
         {
             return await _dbSet.FindAsync(id);
         }
 
-        public async Task<T> Guardar(T entidad)
+        public virtual async Task<T> Guardar(T entidad)
         {
             await _dbSet.AddAsync(entidad);
             await _context.SaveChangesAsync();
             return entidad;
         }
 
-        public async Task<T> Editar(T entidad)
+        public virtual async Task<T> Editar(T entidad)
         {
             _dbSet.Update(entidad);
             await _context.SaveChangesAsync();
             return entidad;
         }
 
-        public async Task Eliminar(int id)
+        public virtual async Task Eliminar(int id)
         {
             var entidad = await _dbSet.FindAsync(id);
 

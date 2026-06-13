@@ -41,6 +41,46 @@ namespace HojasPersonaje.Backend.Controllers
             return BadRequest(resultado.Mensaje);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Combo()
+        {
+            //Verifica que el usuario ingresado tiene el rol de administrador
+            var nameClaim = User.FindFirst(ClaimTypes.Name)?.Value;
+            var hasRol = await _userService.VerificarUsuarioRol(nameClaim!, TipoUsuario.Administrador.ToString());
+            if (!hasRol.Exitoso)
+            {
+                return Unauthorized(hasRol.Mensaje);
+            }
+
+            var resultado = await _services.Combo();
+            if (resultado.Exitoso)
+            {
+                return Ok(resultado.Resultado);
+            }
+            return BadRequest(resultado.Mensaje);
+        }
+
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> BuscarPorId(int id)
+        {
+            //Verifica que el usuario ingresado tiene el rol de administrador
+            var nameClaim = User.FindFirst(ClaimTypes.Name)?.Value;
+            var hasRol = await _userService.VerificarUsuarioRol(nameClaim!, TipoUsuario.Administrador.ToString());
+            if (!hasRol.Exitoso)
+            {
+                return Unauthorized(hasRol.Mensaje);
+            }
+
+            var resultado = await _services.ObtenerPorId(id);
+            if (resultado.Exitoso)
+            {
+                return Ok(resultado.Resultado);
+            }
+            return BadRequest(resultado.Mensaje);
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> Ingresar([FromBody] Disciplina disciplina)
         {
@@ -59,6 +99,7 @@ namespace HojasPersonaje.Backend.Controllers
             }
             return BadRequest(resultado.Mensaje);
         }
+
 
         [HttpPut]
         public async Task<IActionResult> Editar(Disciplina disciplina)
@@ -98,23 +139,5 @@ namespace HojasPersonaje.Backend.Controllers
             return BadRequest(resultado.Mensaje);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> BuscarPorId(int id)
-        {
-            //Verifica que el usuario ingresado tiene el rol de administrador
-            var nameClaim = User.FindFirst(ClaimTypes.Name)?.Value;
-            var hasRol = await _userService.VerificarUsuarioRol(nameClaim!, TipoUsuario.Administrador.ToString());
-            if (!hasRol.Exitoso)
-            {
-                return Unauthorized(hasRol.Mensaje);
-            }
-
-            var resultado = await _services.ObtenerPorId(id);
-            if (resultado.Exitoso)
-            {
-                return Ok(resultado.Resultado);
-            }
-            return BadRequest(resultado.Mensaje);
-        }
     }
 }

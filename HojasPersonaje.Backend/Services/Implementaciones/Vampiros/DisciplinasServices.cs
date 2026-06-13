@@ -116,5 +116,25 @@ namespace HojasPersonaje.Backend.Services.Implementaciones.Vampiros
                 };
             }
         }
+
+        public async Task<ActionResponse<List<Disciplina>>> Combo()
+        {
+            try
+            {
+                return new ActionResponse<List<Disciplina>>
+                {
+                    Exitoso = true,
+                    Resultado = await _repository.Combo()
+                };
+            }
+            catch (Exception e)
+            {
+                return new ActionResponse<List<Disciplina>>
+                {
+                    Exitoso = false,
+                    Mensaje = e.Message
+                };
+            }
+        }
     }
 }

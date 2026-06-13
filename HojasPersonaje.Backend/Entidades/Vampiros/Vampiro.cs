@@ -6,6 +6,6 @@
         public string? Nombre { get; set; }
 
         public ICollection<ClanBane>? DebilidadesClanes {  get; set; }
-        public ICollection<DisciplinaVampiro> disciplinaVampiros { get; set; }
+        public ICollection<DisciplinaVampiro>? disciplinaVampiros { get; set; }
     }
 }
