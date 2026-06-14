@@ -20,9 +20,46 @@ namespace HojasPersonaje.Backend.Services.Implementaciones.Vampiros
         {
             try
             {
+                var vampiro = await _repository.ObtenerPorIdFull(entidad.id);
+
+                if (vampiro == null)
+                {
+                    return new ActionResponse<Vampiro>
+                    {
+                        Exitoso = false,
+                        Mensaje = "El vampiro no existe."
+                    };
+                }
+
+                var eliminar = await _repository.EliminarDisciplinas(vampiro);
+                if (!eliminar)
+                {
+                    return new ActionResponse<Vampiro>
+                    {
+                        Exitoso = false,
+                        Mensaje = "Ha ocurrido un error al eliminar las depedencias"
+                    };
+                }
+
+                vampiro.Nombre = entidad.Nombre;
+                vampiro.disciplinaVampiros = new List<DisciplinaVampiro>();
+                vampiro.DebilidadesClanes = new List<ClanBane>()
+                {
+                    entidad.clanBane!
+                };
+
+                foreach(var disciplina in entidad.Disciplinas!)
+                {      
+                    vampiro.disciplinaVampiros!.Add(new DisciplinaVampiro
+                    {
+                        disciplinaId = disciplina.Id
+                    });
+                }
+
                 return new ActionResponse<Vampiro>
                 {
-                    Exitoso = true
+                    Exitoso = true,
+                    Resultado = await _repository.Editar(vampiro)
                 };
             }
             catch (Exception ex)
@@ -39,9 +76,12 @@ namespace HojasPersonaje.Backend.Services.Implementaciones.Vampiros
         {
             try
             {
+                await _repository.Eliminar(id);
+
                 return new ActionResponse<bool>
                 {
-                    Exitoso = true
+                    Exitoso = true,
+                    Resultado = true
                 };
             }
             catch (Exception ex)
@@ -85,7 +125,7 @@ namespace HojasPersonaje.Backend.Services.Implementaciones.Vampiros
                 return new ActionResponse<Vampiro>
                 {
                     Exitoso = true,
-                    Resultado = await _repository.ObtenerPorId(id)
+                    Resultado = await _repository.ObtenerPorIdFull(id)
                 };
             }
             catch (Exception ex)

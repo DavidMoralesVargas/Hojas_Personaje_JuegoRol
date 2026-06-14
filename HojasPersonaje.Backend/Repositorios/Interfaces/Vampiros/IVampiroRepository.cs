@@ -9,5 +9,7 @@ namespace HojasPersonaje.Backend.Repositorios.Interfaces.Vampiros
         Task<Vampiro> Guardar(Vampiro entidad);
         Task<Vampiro> Editar(Vampiro entidad);
         Task Eliminar(int id);
+        Task<Vampiro?> ObtenerPorIdFull(int id);
+        Task<bool> EliminarDisciplinas(Vampiro vampiro);
     }
 }

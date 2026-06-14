@@ -15,7 +15,11 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json.Serialization;
 
+
+
 var builder = WebApplication.CreateBuilder(args);
+
+
 
 //Configurar CORS para que solo el Frontend en Vue pueda acceder a él
 builder.Services.AddCors(options =>
