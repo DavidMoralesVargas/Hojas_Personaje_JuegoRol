@@ -156,12 +156,13 @@ code {
   }
 }
 
+/*MODIFIQUE EL APP*/
 #app {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
+  width: 100%; /* Cambiado de 1126px a 100% */
+  /* max-width: 100%; <- Ya no es necesario */
+  margin: 0;          /* Ya no necesitas centrarlo */
   text-align: center;
-  border-inline: 1px solid var(--border);
+  /* border-inline: 1px solid var(--border); <- Elimínalo si no quieres las líneas laterales */
   min-height: 100svh;
   display: flex;
   flex-direction: column;
