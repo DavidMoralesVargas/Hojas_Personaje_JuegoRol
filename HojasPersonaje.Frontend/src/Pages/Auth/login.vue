@@ -170,8 +170,17 @@ const continuarFlujo = (data) => {
   // 3. Guardamos el token en el localStorage (usamos 'Token' con mayúscula como lo definiste antes)
   localStorage.setItem('Token', data.token)
   
-  // Opcional: También puedes guardar la expiración si la necesitas para verificar sesiones caducadas después
-  localStorage.setItem('TokenExp', data.expiracion)
+  // Decodificar JWT
+  const payload = JSON.parse(atob(data.token.split('.')[1]));
+
+  // Obtener rol
+  const rol =
+    payload.role ||
+    payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+
+  // Guardar rol
+  localStorage.setItem('Rol', rol);
+  
 
   // 4. Mostramos el mensaje y redirigimos
   Swal.fire({
