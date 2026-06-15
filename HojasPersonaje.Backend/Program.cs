@@ -16,9 +16,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 
 
-
 var builder = WebApplication.CreateBuilder(args);
-
 
 
 //Configurar CORS para que solo el Frontend en Vue pueda acceder a él
@@ -48,12 +46,14 @@ builder.Services.AddScoped(typeof(IRepository<>),typeof(Repository<>));
 builder.Services.AddScoped<IUsuariosRepository, UsuariosRepository>();
 builder.Services.AddScoped<IDisciplinasRepository, DisciplinasRepository>();
 builder.Services.AddScoped<IVampiroRepository, VampiroRepository>();
+builder.Services.AddScoped<IHabilidadDisciplinaRepository, HabilidadDisciplinaRepository>();
 
 
 //Servicios
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IDisciplinasServices, DisciplinasServices>();
 builder.Services.AddScoped<IVampirosServices, VampirosServices>();
+builder.Services.AddScoped<IHabilidadDisciplinaServices, HabilidadDisciplinaServices>();
 
 
 //Configuramos autenticación de Token

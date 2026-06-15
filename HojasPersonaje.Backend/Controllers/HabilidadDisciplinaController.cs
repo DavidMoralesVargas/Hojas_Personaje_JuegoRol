@@ -1,5 +1,4 @@
-﻿using HojasPersonaje.Backend.DTOs;
-using HojasPersonaje.Backend.Entidades.Usuarios;
+﻿using HojasPersonaje.Backend.Entidades.Usuarios;
 using HojasPersonaje.Backend.Entidades.Vampiros;
 using HojasPersonaje.Backend.Services.Interfaces.Usuarios;
 using HojasPersonaje.Backend.Services.Interfaces.Vampiros;
@@ -13,11 +12,12 @@ namespace HojasPersonaje.Backend.Controllers
     [ApiController]
     [Route("/api/[controller]")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class DisciplinasController : ControllerBase
+    public class HabilidadDisciplinaController : ControllerBase
     {
-        private readonly IDisciplinasServices _services;
+        private readonly IHabilidadDisciplinaServices _services;
         private readonly IUsuarioService _userService;
-        public DisciplinasController(IDisciplinasServices services, IUsuarioService userService)
+
+        public HabilidadDisciplinaController(IHabilidadDisciplinaServices services, IUsuarioService userService)
         {
             _services = services;
             _userService = userService;
@@ -30,7 +30,8 @@ namespace HojasPersonaje.Backend.Controllers
             var nameClaim = User.FindFirst(ClaimTypes.Name)?.Value;
             var hasRol = await _userService.VerificarUsuarioRol(nameClaim!, TipoUsuario.Administrador.ToString());
 
-            if (!hasRol.Exitoso){
+            if (!hasRol.Exitoso)
+            {
                 return StatusCode(StatusCodes.Status403Forbidden, hasRol.Mensaje);
             }
 
@@ -42,8 +43,8 @@ namespace HojasPersonaje.Backend.Controllers
             return BadRequest(resultado.Mensaje);
         }
 
-        [HttpGet("combo")]
-        public async Task<IActionResult> Combo()
+        [HttpGet("all/{id}")]
+        public async Task<IActionResult> ObtenerTodosPorId(int id)
         {
             //Verifica que el usuario ingresado tiene el rol de administrador
             var nameClaim = User.FindFirst(ClaimTypes.Name)?.Value;
@@ -53,7 +54,7 @@ namespace HojasPersonaje.Backend.Controllers
                 return StatusCode(StatusCodes.Status403Forbidden, hasRol.Mensaje);
             }
 
-            var resultado = await _services.Combo();
+            var resultado = await _services.ObtenerTodosPorId(id);
             if (resultado.Exitoso)
             {
                 return Ok(resultado.Resultado);
@@ -83,7 +84,7 @@ namespace HojasPersonaje.Backend.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Guardar([FromBody] DisciplinaDTO disciplina)
+        public async Task<IActionResult> Guardar([FromBody] HabilidadDisciplina habilidadDisciplina)
         {
             //Verifica que el usuario ingresado tiene el rol de administrador
             var nameClaim = User.FindFirst(ClaimTypes.Name)?.Value;
@@ -93,7 +94,27 @@ namespace HojasPersonaje.Backend.Controllers
                 return StatusCode(StatusCodes.Status403Forbidden, hasRol.Mensaje);
             }
 
-            var resultado = await _services.Guardar(disciplina);
+            var resultado = await _services.Guardar(habilidadDisciplina);
+            if (resultado.Exitoso)
+            {
+                return Ok(resultado.Resultado);
+            }
+            return BadRequest(resultado.Mensaje);
+        }
+
+
+        [HttpPost("all")]
+        public async Task<IActionResult> GuardarTodos([FromBody] List<HabilidadDisciplina> habilidades)
+        {
+            //Verifica que el usuario ingresado tiene el rol de administrador
+            var nameClaim = User.FindFirst(ClaimTypes.Name)?.Value;
+            var hasRol = await _userService.VerificarUsuarioRol(nameClaim!, TipoUsuario.Administrador.ToString());
+            if (!hasRol.Exitoso)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, hasRol.Mensaje);
+            }
+
+            var resultado = await _services.GuardarTodos(habilidades);
             if (resultado.Exitoso)
             {
                 return Ok(resultado.Resultado);
@@ -103,7 +124,7 @@ namespace HojasPersonaje.Backend.Controllers
 
 
         [HttpPut]
-        public async Task<IActionResult> Editar(Disciplina disciplina)
+        public async Task<IActionResult> Editar(HabilidadDisciplina habilidadDisciplina)
         {
             //Verifica que el usuario ingresado tiene el rol de administrador
             var nameClaim = User.FindFirst(ClaimTypes.Name)?.Value;
@@ -113,7 +134,7 @@ namespace HojasPersonaje.Backend.Controllers
                 return StatusCode(StatusCodes.Status403Forbidden, hasRol.Mensaje);
             }
 
-            var resultado = await _services.Editar(disciplina);
+            var resultado = await _services.Editar(habilidadDisciplina);
             if (resultado.Exitoso)
             {
                 return Ok(resultado.Resultado);
@@ -139,6 +160,5 @@ namespace HojasPersonaje.Backend.Controllers
             }
             return BadRequest(resultado.Mensaje);
         }
-
     }
 }

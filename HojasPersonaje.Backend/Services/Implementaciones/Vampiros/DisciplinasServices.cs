@@ -1,4 +1,5 @@
-﻿using HojasPersonaje.Backend.Entidades.Vampiros;
+﻿using HojasPersonaje.Backend.DTOs;
+using HojasPersonaje.Backend.Entidades.Vampiros;
 using HojasPersonaje.Backend.Helpers;
 using HojasPersonaje.Backend.Repositorios.Interfaces.Vampiros;
 using HojasPersonaje.Backend.Services.Interfaces.Vampiros;
@@ -9,10 +10,14 @@ namespace HojasPersonaje.Backend.Services.Implementaciones.Vampiros
     public class DisciplinasServices : IDisciplinasServices
     {
         private readonly IDisciplinasRepository _repository;
+        private readonly IHabilidadDisciplinaServices _habilidadServices;
+        private readonly IHabilidadDisciplinaRepository _habilidadRepository;
 
-        public DisciplinasServices(IDisciplinasRepository repository)
+        public DisciplinasServices(IDisciplinasRepository repository, IHabilidadDisciplinaServices habilidadServices, IHabilidadDisciplinaRepository habilidadRepository)
         {
             _repository = repository;
+            _habilidadServices = habilidadServices;
+            _habilidadRepository = habilidadRepository;
         }
 
         public async Task<ActionResponse<Disciplina>> Editar(Disciplina entidad)
@@ -56,11 +61,11 @@ namespace HojasPersonaje.Backend.Services.Implementaciones.Vampiros
             }
         }
 
-        public async Task<ActionResponse<Disciplina>> Guardar(Disciplina entidad)
+        public async Task<ActionResponse<Disciplina>> Guardar(DisciplinaDTO entidad)
         {
             try
             {
-                var resultado = await _repository.Guardar(entidad);
+                var resultado = await _repository.Guardar(ConvertirADisciplina(entidad));
                 return new ActionResponse<Disciplina>
                 {
                     Exitoso = true,
@@ -135,6 +140,16 @@ namespace HojasPersonaje.Backend.Services.Implementaciones.Vampiros
                     Mensaje = e.Message
                 };
             }
+        }
+
+        //Método para convertir de DTO a entidad
+        private Disciplina ConvertirADisciplina(DisciplinaDTO dto)
+        {
+            return new Disciplina
+            {
+                Nombre = dto.nombre,
+                habilidadDisciplinas = dto.habilidades
+            };
         }
     }
 }
