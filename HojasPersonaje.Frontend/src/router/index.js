@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Inicio from "../Pages/Inicio.vue";
 import AuhtRoutes from "./rutas/AuhtRoutes.js";
 import DisciplinasRoutes from "./rutas/DisciplinasRoutes.js";
+import VampirosRoutes from "./rutas/vampirosRoutes.js";
 
 
 
@@ -17,7 +18,8 @@ const router = createRouter({
             component: Inicio
         },
         ...AuhtRoutes,
-        ...DisciplinasRoutes
+        ...DisciplinasRoutes,
+        ...VampirosRoutes
     ]
 })
 

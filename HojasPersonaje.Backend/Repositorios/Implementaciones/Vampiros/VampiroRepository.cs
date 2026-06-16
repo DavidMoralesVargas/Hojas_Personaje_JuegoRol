@@ -25,7 +25,8 @@ namespace HojasPersonaje.Backend.Repositorios.Implementaciones.Vampiros
         public async Task<Vampiro?> ObtenerPorIdFull(int id)
         {
             return await _context.Vampiros.Include(cb => cb.DebilidadesClanes)
-                                          .Include(dv => dv.disciplinaVampiros)
+                                          .Include(dv => dv.disciplinaVampiros)!
+                                          .ThenInclude(d => d.disciplina)
                                           .FirstOrDefaultAsync(v => v.Id == id);
         }
 
@@ -37,6 +38,7 @@ namespace HojasPersonaje.Backend.Repositorios.Implementaciones.Vampiros
 
             return affectedRows > 0;
         }
+
 
         public override async Task Eliminar(int id)
         {

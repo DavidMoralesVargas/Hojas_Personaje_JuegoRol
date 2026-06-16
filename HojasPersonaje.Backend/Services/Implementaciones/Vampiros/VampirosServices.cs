@@ -18,6 +18,15 @@ namespace HojasPersonaje.Backend.Services.Implementaciones.Vampiros
 
         public async Task<ActionResponse<Vampiro>> Editar(VampiroDTO entidad)
         {
+            if(entidad.Disciplinas!.Count <= 0)
+            {
+                return new ActionResponse<Vampiro>
+                {
+                    Exitoso = false,
+                    Mensaje = "Las debilidades o disciplinas de clan no pueden estar vacias"
+                };
+            }
+
             try
             {
                 var vampiro = await _repository.ObtenerPorIdFull(entidad.id);
@@ -31,21 +40,28 @@ namespace HojasPersonaje.Backend.Services.Implementaciones.Vampiros
                     };
                 }
 
-                var eliminar = await _repository.EliminarDisciplinas(vampiro);
-                if (!eliminar)
+                if(vampiro.disciplinaVampiros!.Count() > 0)
                 {
-                    return new ActionResponse<Vampiro>
+                    var eliminar = await _repository.EliminarDisciplinas(vampiro);
+                    if (!eliminar)
                     {
-                        Exitoso = false,
-                        Mensaje = "Ha ocurrido un error al eliminar las depedencias"
-                    };
+                        return new ActionResponse<Vampiro>
+                        {
+                            Exitoso = false,
+                            Mensaje = "Ha ocurrido un error al eliminar las depedencias"
+                        };
+                    }
                 }
 
                 vampiro.Nombre = entidad.Nombre;
                 vampiro.disciplinaVampiros = new List<DisciplinaVampiro>();
                 vampiro.DebilidadesClanes = new List<ClanBane>()
                 {
-                    entidad.clanBane!
+                    new ClanBane()
+                    {
+                        Bane = entidad.clanBane!.Bane,
+                        Compulsion = entidad.clanBane!.Compulsion
+                    }
                 };
 
                 foreach(var disciplina in entidad.Disciplinas!)
