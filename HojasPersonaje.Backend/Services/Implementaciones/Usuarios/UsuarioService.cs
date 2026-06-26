@@ -19,14 +19,29 @@ namespace HojasPersonaje.Backend.Services.Implementaciones.Usuarios
         }
 
         //Método para editar usuario
-        public async Task<ActionResponse<Usuario>> Editar(Usuario entidad)
-        {
+        public async Task<ActionResponse<Usuario>> Editar(UsuarioDTO entidad)
+        {   
             try
             {
+                //Primero busca al usuario antes de actualizarlo.
+                var usuario = await _repository.ObtenerPorId(entidad.id);
+                if(usuario == null)
+                { //Si el usuario no existe, lanza un error
+                    return new ActionResponse<Usuario>
+                    {
+                        Exitoso = false,
+                        Mensaje = "No se encontró el usuario para editar"
+                    };
+                }
+                //Actualiza los atributos para la edición
+                usuario.Nombre_Usuario = entidad.NombreUsuario;
+                usuario.Contrasena = entidad.Pin != "" && entidad.Pin != null ? BCrypt.Net.BCrypt.HashPassword(entidad.Pin) : usuario.Contrasena;
+
+
                 return new ActionResponse<Usuario>
                 {
                     Exitoso = true,
-                    Resultado = await _repository.Editar(entidad)
+                    Resultado = await _repository.Editar(usuario) //Llama al repositorio para editar
                 };
             }
             catch (Exception ex)
@@ -130,19 +145,30 @@ namespace HojasPersonaje.Backend.Services.Implementaciones.Usuarios
         }
 
         //Obtiene toda la lista de usuarios
-        public async Task<ActionResponse<List<Usuario>>> ObtenerTodos()
+        public async Task<ActionResponse<List<UsuarioListarDTO>>> ObtenerTodos()
         {
             try
             {
-                return new ActionResponse<List<Usuario>>
+                var listaUsuario = await _repository.ObtenerTodos(); //Llamamos al repositorio para la lista de usuario
+
+                //Transformamos la lista de usuarios en una DTO para enviar al cliente
+                var nuevaLista = listaUsuario.Select(x => new UsuarioListarDTO
+                {
+                    Id = x.Id,
+                    Nombre_Usuario = x.Nombre_Usuario,
+                    Foto = x.Foto,
+                    tipoUsuario = x.tipoUsuario
+                }).ToList();
+
+                return new ActionResponse<List<UsuarioListarDTO>>
                 {
                     Exitoso = true,
-                    Resultado = await _repository.ObtenerTodos()
+                    Resultado = nuevaLista
                 };
             }
             catch(Exception ex)
             {
-                return new ActionResponse<List<Usuario>>
+                return new ActionResponse<List<UsuarioListarDTO>>
                 {
                     Exitoso = false,
                     Mensaje = ex.Message

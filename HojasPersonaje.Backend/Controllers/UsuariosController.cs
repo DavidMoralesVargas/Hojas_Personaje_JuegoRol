@@ -2,6 +2,8 @@
 using HojasPersonaje.Backend.Entidades.Usuarios;
 using HojasPersonaje.Backend.Services.Interfaces.Usuarios;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,6 +14,7 @@ namespace HojasPersonaje.Backend.Controllers
 {
     [ApiController]
     [Route("/api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsuariosController : ControllerBase
     {
         private readonly IUsuarioService _usuarioService;
@@ -26,6 +29,16 @@ namespace HojasPersonaje.Backend.Controllers
         [HttpGet]
         public async Task<IActionResult> ObtenerTodos()
         {
+            //Verifica que el usuario ingresado tiene el rol de administrador
+            var nameClaim = User.FindFirst(ClaimTypes.Name)?.Value;
+            var hasRol = await _usuarioService.VerificarUsuarioRol(nameClaim!, TipoUsuario.Administrador.ToString());
+
+            if (!hasRol.Exitoso)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, hasRol.Mensaje);
+            }
+
+
             var resultado = await _usuarioService.ObtenerTodos();
             if (resultado.Exitoso)
             {
@@ -35,6 +48,7 @@ namespace HojasPersonaje.Backend.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]   //No necesita token para el método de ingresar (Login y Registro)
         public async Task<IActionResult> Ingresar([FromBody] UsuarioDTO usuario)
         {
             var resultado = await _usuarioService.Ingresar(usuario);
@@ -46,8 +60,18 @@ namespace HojasPersonaje.Backend.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Editar(Usuario usuario)
+        public async Task<IActionResult> Editar([FromBody] UsuarioDTO usuario)
         {
+            //Verifica que el usuario ingresado tiene el rol de administrador
+            var nameClaim = User.FindFirst(ClaimTypes.Name)?.Value;
+            var hasRol = await _usuarioService.VerificarUsuarioRol(nameClaim!, TipoUsuario.Administrador.ToString());
+
+            if (!hasRol.Exitoso)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, hasRol.Mensaje);
+            }
+
+
             var resultado = await _usuarioService.Editar(usuario);
             if (resultado.Exitoso)
             {
@@ -59,6 +83,17 @@ namespace HojasPersonaje.Backend.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Eliminar(int id)
         {
+            //Verifica que el usuario ingresado tiene el rol de administrador
+            var nameClaim = User.FindFirst(ClaimTypes.Name)?.Value;
+            var hasRol = await _usuarioService.VerificarUsuarioRol(nameClaim!, TipoUsuario.Administrador.ToString());
+
+            if (!hasRol.Exitoso)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, hasRol.Mensaje);
+            }
+
+
+
             var resultado = await _usuarioService.Eliminar(id);
             if (resultado.Exitoso)
             {
@@ -70,6 +105,16 @@ namespace HojasPersonaje.Backend.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> BuscarPorId(int id)
         {
+            //Verifica que el usuario ingresado tiene el rol de administrador
+            var nameClaim = User.FindFirst(ClaimTypes.Name)?.Value;
+            var hasRol = await _usuarioService.VerificarUsuarioRol(nameClaim!, TipoUsuario.Administrador.ToString());
+
+            if (!hasRol.Exitoso)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, hasRol.Mensaje);
+            }
+
+
             var resultado = await _usuarioService.ObtenerPorId(id);
             if (resultado.Exitoso)
             {
