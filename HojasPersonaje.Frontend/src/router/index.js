@@ -5,6 +5,7 @@ import Inicio from "../Pages/Inicio.vue";
 import AuhtRoutes from "./rutas/AuhtRoutes.js";
 import DisciplinasRoutes from "./rutas/DisciplinasRoutes.js";
 import VampirosRoutes from "./rutas/vampirosRoutes.js";
+import UsuariosRoutes from "./rutas/usuariosRoutes.js";
 
 
 
@@ -19,7 +20,8 @@ const router = createRouter({
         },
         ...AuhtRoutes,
         ...DisciplinasRoutes,
-        ...VampirosRoutes
+        ...VampirosRoutes,
+        ...UsuariosRoutes
     ]
 })
 

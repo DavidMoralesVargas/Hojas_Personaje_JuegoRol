@@ -17,6 +17,7 @@
           <div class="dropdown-menu" :class="{ 'is-open': isDropdownOpen }">
             <a href="/disciplinas" class="dropdown-item" @click="isDropdownOpen = false">Disciplinas</a>
             <a href="/vampiros" class="dropdown-item" @click="isDropdownOpen = false">Vampiros</a>
+            <a href="/usuarios" class="dropdown-item" @click="isDropdownOpen = false">Usuarios</a>
           </div>
         </div>
       </nav>
