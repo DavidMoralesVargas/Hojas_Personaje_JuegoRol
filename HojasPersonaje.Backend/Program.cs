@@ -1,12 +1,16 @@
 using HojasPersonaje.Backend.Datos;
 using HojasPersonaje.Backend.Repositorios.Implementaciones.Generico;
+using HojasPersonaje.Backend.Repositorios.Implementaciones.Hojas;
 using HojasPersonaje.Backend.Repositorios.Implementaciones.Usuarios;
 using HojasPersonaje.Backend.Repositorios.Implementaciones.Vampiros;
 using HojasPersonaje.Backend.Repositorios.Interfaces.Generico;
+using HojasPersonaje.Backend.Repositorios.Interfaces.Hojas;
 using HojasPersonaje.Backend.Repositorios.Interfaces.Usuarios;
 using HojasPersonaje.Backend.Repositorios.Interfaces.Vampiros;
+using HojasPersonaje.Backend.Services.Implementaciones.Hojas;
 using HojasPersonaje.Backend.Services.Implementaciones.Usuarios;
 using HojasPersonaje.Backend.Services.Implementaciones.Vampiros;
+using HojasPersonaje.Backend.Services.Interfaces.Hojas;
 using HojasPersonaje.Backend.Services.Interfaces.Usuarios;
 using HojasPersonaje.Backend.Services.Interfaces.Vampiros;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -47,6 +51,7 @@ builder.Services.AddScoped<IUsuariosRepository, UsuariosRepository>();
 builder.Services.AddScoped<IDisciplinasRepository, DisciplinasRepository>();
 builder.Services.AddScoped<IVampiroRepository, VampiroRepository>();
 builder.Services.AddScoped<IHabilidadDisciplinaRepository, HabilidadDisciplinaRepository>();
+builder.Services.AddScoped<ICronicaRepository, CronicaRepository>();
 
 
 //Servicios
@@ -54,6 +59,7 @@ builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IDisciplinasServices, DisciplinasServices>();
 builder.Services.AddScoped<IVampirosServices, VampirosServices>();
 builder.Services.AddScoped<IHabilidadDisciplinaServices, HabilidadDisciplinaServices>();
+builder.Services.AddScoped<ICronicasServices, CronicasServices>();
 
 
 //Configuramos autenticación de Token
