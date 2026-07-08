@@ -90,12 +90,13 @@ namespace HojasPersonaje.Backend.Services.Implementaciones.Hojas
 
                 var cronicaNew = new Cronica()
                 {
-                    FechaCreacion = DateTime.Now,
+                    FechaCreacion = DateTime.UtcNow,
                     Finalizado = false,
                     DungeonMasterId = usuario.Id,
                     PaisCronica = entidad.PaisCronica,
                     NombreCronica = entidad.NombreCronica,
-                    Codigo = await GenerarCodigo()
+                    Codigo = await GenerarCodigo(),
+                    PrincipiosCronicas = new List<PrincipioCronica>{ new PrincipioCronica { PrincipiosCronica = entidad.PrincipiosCronica } }
                 };
 
                 return new ActionResponse<Cronica>

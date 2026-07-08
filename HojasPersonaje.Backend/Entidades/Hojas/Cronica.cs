@@ -14,6 +14,6 @@ namespace HojasPersonaje.Backend.Entidades.Hojas
         public Usuario? DungeonMaster { get; set; }
         public int DungeonMasterId { get; set; }
 
-        public ICollection<Cronica>? Cronicas { get; set; }
+        public ICollection<PrincipioCronica>? PrincipiosCronicas { get; set; }
     }
 }

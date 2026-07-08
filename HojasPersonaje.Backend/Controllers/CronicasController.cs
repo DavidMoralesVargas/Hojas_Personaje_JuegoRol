@@ -30,7 +30,7 @@ namespace HojasPersonaje.Backend.Controllers
             var nameClaim = User.FindFirst(ClaimTypes.Name)?.Value;
 
             var resultado = await _cronicasServices.ObtenerTodosPorId(nameClaim!);
-            if(!resultado.Exitoso)
+            if(resultado.Exitoso)
             {
                 return Ok(resultado.Resultado);
             }
@@ -41,7 +41,7 @@ namespace HojasPersonaje.Backend.Controllers
         public async Task<IActionResult> ObtenerPorCodigo(string codigo)
         {
             var resultado = await _cronicasServices.ObtenerPorCodigo(codigo);
-            if (!resultado.Exitoso)
+            if (resultado.Exitoso)
             {
                 return Ok(resultado.Resultado);
             }
@@ -52,7 +52,7 @@ namespace HojasPersonaje.Backend.Controllers
         public async Task<IActionResult> ObtenerPorId(int id)
         {
             var resultado = await _cronicasServices.ObtenerPorId(id);
-            if (!resultado.Exitoso)
+            if (resultado.Exitoso)
             {
                 return Ok(resultado.Resultado);
             }
@@ -67,7 +67,7 @@ namespace HojasPersonaje.Backend.Controllers
 
 
             var resultado = await _cronicasServices.Guardar(cronica, nameClaim!);
-            if (!resultado.Exitoso)
+            if (resultado.Exitoso)
             {
                 return Ok(resultado.Resultado);
             }
@@ -79,7 +79,7 @@ namespace HojasPersonaje.Backend.Controllers
         {
 
             var resultado = await _cronicasServices.Editar(cronica);
-            if (!resultado.Exitoso)
+            if (resultado.Exitoso)
             {
                 return Ok(resultado.Resultado);
             }
@@ -90,7 +90,7 @@ namespace HojasPersonaje.Backend.Controllers
         public async Task<IActionResult> Eliminar(int id)
         {
             var resultado = await _cronicasServices.Eliminar(id);
-            if (!resultado.Exitoso)
+            if (resultado.Exitoso)
             {
                 return Ok(resultado.Resultado);
             }
